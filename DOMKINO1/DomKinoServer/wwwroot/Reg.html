@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMKINO - Регистрация</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #202123;
+            color: #B0A48C;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .reg-container {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+        .reg-container h2 {
+            margin-bottom: 20px;
+        }
+        .reg-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px -18px;
+            border: 1px solid #B0A48C;
+            border-radius: 5px;
+            background-color: #444;
+            color: #B0A48C;
+        }
+        .reg-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        .reg-container button:hover {
+            background-color: #0056b3;
+        }
+        .reg-container .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="reg-container">
+        <h2>Регистрация</h2>
+        <input type="text" id="phone" placeholder="Номер телефона">
+        <input type="text" id="firstName" placeholder="Имя">
+        <input type="text" id="lastName" placeholder="Фамилия">
+        <input type="password" id="password" placeholder="Пароль">
+        <button id="registerButton">Зарегистрироваться</button>
+        <div class="error" id="errorMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById('registerButton').addEventListener('click', async () => {
+            const phone = document.getElementById('phone').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const password = document.getElementById('password').value;
+
+            if (!phone || !firstName || !lastName || !password) {
+                document.getElementById('errorMessage').textContent = 'Неправильно заполнены данные';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5001/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phoneNumber: phone, firstName, lastName, password })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = 'Auth.html';
+                } else {
+                    document.getElementById('errorMessage').textContent = data.message || 'Ошибка при регистрации';
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = 'Ошибка при регистрации';
+            }
+        });
+    </script>
+</body>
+</html>

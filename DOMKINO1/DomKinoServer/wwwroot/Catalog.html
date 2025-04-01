@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMKINO - Каталог</title>
+    <style>
+        body { font-family: Arial; margin: 0; background: #202123; color: #B0A48C; }
+        header { background: #333; padding: 10px; text-align: center; }
+        nav { display: flex; justify-content: center; background: #444; }
+        nav a { color: #B0A48C; padding: 14px 20px; text-decoration: none; }
+        nav a:hover { background: #555; }
+        .container { padding: 20px; margin-top: 50px; text-align: center; }
+        .search-bar { margin-bottom: 20px; }
+        .search-bar input { padding: 10px; width: 300px; background: #333; border: 1px solid #B0A48C; color: #B0A48C; }
+        .filters { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .movies { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
+        .movie-card { background: #333; padding: 15px; border-radius: 10px; }
+        .movie-card img { width: 100%; height: 300px; object-fit: cover; border-radius: 5px; }
+        .session-link { color: #4CAF50; cursor: pointer; text-decoration: underline; }
+        footer { background: #333; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DOMKINO</h1>
+        <p>Ваш кинотеатр для лучших впечатлений</p>
+    </header>
+
+    <nav>
+        <a href="Catalog.html">Каталог</a>
+        <a href="Booking.html">Зал</a>
+        <a href="Bonus.html">Бонусная программа</a>
+        <a id="authLink" href="Auth.html">Авторизация</a>
+        <a href="Info.html">Контактная информация</a>
+    </nav>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Поиск фильма...">
+        </div>
+
+        <div class="filters">
+            <select id="genreFilter">
+                <option value="">Все жанры</option>
+                <option>Драма</option>
+                <option>Комедия</option>
+                <option>Боевик</option>
+            </select>
+            <select id="ageFilter">
+                <option value="0">Все возрасты</option>
+                <option value="6">6+</option>
+                <option value="12">12+</option>
+                <option value="16">16+</option>
+                <option value="18">18+</option>
+            </select>
+            <div class="slider-container">
+                <input type="range" id="durationSlider" min="0" max="240" value="240">
+                <span id="durationValue">Макс. длительность: 240 мин</span>
+            </div>
+        </div>
+
+        <div class="movies" id="moviesContainer"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 DOMKINO. Все права защищены.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            applyFilters();
+            setupAuthLink();
+        });
+
+        async function applyFilters() {
+            const genre = document.getElementById('genreFilter').value;
+            const ageRating = parseInt(document.getElementById('ageFilter').value);
+            const maxDuration = parseInt(document.getElementById('durationSlider').value);
+            
+            try {
+                const response = await fetch(
+                    `http://localhost:5001/api/sessions/active?genre=${genre}&ageRating=${ageRating}&maxDuration=${maxDuration}`
+                );
+                const movies = await response.json();
+                renderMovies(movies);
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+            }
+        }
+
+        function renderMovies(movies) {
+            const container = document.getElementById('moviesContainer');
+            container.innerHTML = '';
+
+            movies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.innerHTML = `
+                    <img src="${movie.poster}" alt="${movie.title}">
+                    <h3>${movie.title}</h3>
+                    <p>${movie.description}</p>
+                    <p>Жанр: ${movie.genre}</p>
+                    <p>Длительность: ${movie.duration} мин</p>
+                    <p>Возраст: ${movie.ageRestriction}+</p>
+                    <div class="sessions">
+                        ${movie.sessions.map(session => `
+                            <p class="session-link" 
+                                data-session-id="${session.sessionId}"
+                                data-movie-id="${movie.movieId}"
+                                data-movie-title="${movie.title}">
+                                ${new Date(session.showDate).toLocaleString()}
+                            </p>
+                        `).join('')}
+                    </div>
+                `;
+
+                card.querySelectorAll('.session-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        localStorage.setItem('selectedSessionId', link.dataset.sessionId);
+                        localStorage.setItem('selectedMovieId', link.dataset.movieId);
+                        localStorage.setItem('selectedMovieTitle', link.dataset.movieTitle);
+                        window.location.href = 'Booking.html';
+                    });
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        function setupAuthLink() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const authLink = document.getElementById('authLink');
+            if (isLoggedIn) {
+                authLink.textContent = 'Аккаунт';
+                authLink.href = 'Acc.html';
+            }
+        }
+
+        // Обработчики изменений фильтров
+        document.getElementById('genreFilter').addEventListener('change', applyFilters);
+        document.getElementById('ageFilter').addEventListener('change', applyFilters);
+        document.getElementById('durationSlider').addEventListener('input', function() {
+            document.getElementById('durationValue').textContent = 
+                `Макс. длительность: ${this.value} мин`;
+            applyFilters();
+        });
+    </script>
+</body>
+</html>

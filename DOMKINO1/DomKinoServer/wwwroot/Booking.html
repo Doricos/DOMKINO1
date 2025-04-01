@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMKINO - Бронирование</title>
+    <style>
+        body { font-family: Arial; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; padding: 20px; background: #2d2d2d; }
+        .seat-grid { display: grid; grid-template-columns: repeat(10, 40px); gap: 10px; justify-content: center; }
+        .seat { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; 
+                background: #4CAF50; border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+        .selected { background: #2196F3; transform: scale(1.1); }
+        .booked { background: #f44336; cursor: not-allowed; opacity: 0.7; }
+        .info-panel { text-align: center; margin-bottom: 20px; padding: 15px; background: #2d2d2d; }
+        button { padding: 12px 25px; background: #4CAF50; border: none; border-radius: 5px; 
+                color: white; cursor: pointer; font-size: 16px; }
+        button:disabled { background: #666; cursor: not-allowed; }
+        #message { margin-top: 15px; color: #4CAF50; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DOMKINO - Бронирование мест</h1>
+            <div class="info-panel">
+                <p>Аккаунт: <strong id="userPhone"></strong></p>
+                <h2 id="movieTitle"></h2>
+                <p id="sessionDate"></p>
+            </div>
+        </div>
+
+        <div class="seat-grid" id="seatContainer"></div>
+        
+        <div class="info-panel">
+            <button id="confirmBtn" disabled>Подтвердить бронь</button>
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const sessionId = localStorage.getItem('selectedSessionId');
+            const movieId = localStorage.getItem('selectedMovieId');
+            const userId = localStorage.getItem('userId');
+
+            // Валидация данных
+            if (!sessionId || !movieId || !userId) {
+                alert('Ошибка: Недостаточно данных для бронирования');
+                window.location.href = 'Catalog.html';
+                return;
+            }
+
+            try {
+                // Загрузка данных сеанса
+                const sessionRes = await fetch(`http://localhost:5001/api/sessions/${sessionId}`);
+                if (!sessionRes.ok) throw new Error('Сеанс не найден');
+                const session = await sessionRes.json();
+
+                // Загрузка данных фильма
+                const movieRes = await fetch(`http://localhost:5001/api/movies/${movieId}`);
+                if (!movieRes.ok) throw new Error('Фильм не найден');
+                const movie = await movieRes.json();
+
+                // Отображение информации
+                document.getElementById('movieTitle').textContent = movie.title;
+                document.getElementById('sessionDate').textContent = 
+                    new Date(session.showDate).toLocaleString();
+                document.getElementById('userPhone').textContent = 
+                    localStorage.getItem('phone');
+
+                // Загрузка занятых мест
+                const bookingsRes = await fetch(
+                    `http://localhost:5001/api/booking/active?sessionId=${sessionId}`
+                );
+                const bookedSeats = await bookingsRes.json();
+
+                // Генерация мест
+                const seatContainer = document.getElementById('seatContainer');
+                for (let seatNumber = 1; seatNumber <= 50; seatNumber++) {
+                    const seat = document.createElement('div');
+                    seat.className = 'seat';
+                    seat.textContent = seatNumber;
+                    seat.dataset.seatId = seatNumber;
+
+                    if (bookedSeats.includes(seatNumber)) {
+                        seat.classList.add('booked');
+                    } else {
+                        seat.addEventListener('click', () => toggleSeat(seat));
+                    }
+
+                    seatContainer.appendChild(seat);
+                }
+
+                // Логика выбора мест
+                const selectedSeats = new Set();
+                const confirmBtn = document.getElementById('confirmBtn');
+
+                const toggleSeat = (seat) => {
+                    seat.classList.toggle('selected');
+                    const seatId = Number(seat.dataset.seatId);
+                    selectedSeats.has(seatId) ? selectedSeats.delete(seatId) : selectedSeats.add(seatId);
+                    confirmBtn.disabled = selectedSeats.size === 0;
+                };
+
+                // Подтверждение брони
+                confirmBtn.addEventListener('click', async () => {
+                    try {
+                        const response = await fetch('http://localhost:5001/api/booking/create', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                seatIds: Array.from(selectedSeats),
+                                userId: userId,
+                                sessionId: sessionId
+                            })
+                        });
+
+                        const result = await response.json();
+                        if (result.success) {
+                            document.getElementById('message').textContent = "✅ Бронь успешно создана!";
+                            setTimeout(() => window.location.reload(), 1500);
+                        } else {
+                            throw new Error(result.message || 'Ошибка бронирования');
+                        }
+                    } catch (error) {
+                        alert(`Ошибка: ${error.message}`);
+                    }
+                });
+
+            } catch (error) {
+                alert(`Ошибка: ${error.message}`);
+                window.location.href = 'Catalog.html';
+            }
+        });
+    </script>
+</body>
+</html>

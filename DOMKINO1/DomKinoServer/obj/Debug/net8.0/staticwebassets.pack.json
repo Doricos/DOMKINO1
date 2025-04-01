@@ -1,0 +1,69 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Acc.html",
+      "PackagePath": "staticwebassets\\Acc.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Admin.html",
+      "PackagePath": "staticwebassets\\Admin.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Auth.html",
+      "PackagePath": "staticwebassets\\Auth.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Bonus.html",
+      "PackagePath": "staticwebassets\\Bonus.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Booking.html",
+      "PackagePath": "staticwebassets\\Booking.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Catalog.html",
+      "PackagePath": "staticwebassets\\Catalog.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Hall.html",
+      "PackagePath": "staticwebassets\\Hall.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Images\\Hall.jpg",
+      "PackagePath": "staticwebassets\\Images\\Hall.jpg"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Info.html",
+      "PackagePath": "staticwebassets\\Info.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Main.html",
+      "PackagePath": "staticwebassets\\Main.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Pay.html",
+      "PackagePath": "staticwebassets\\Pay.html"
+    },
+    {
+      "Id": "C:\\Users\\batma\\Desktop\\DOMKINO1\\DomKinoServer\\wwwroot\\Reg.html",
+      "PackagePath": "staticwebassets\\Reg.html"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.DomKinoServer.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.DomKinoServer.props",
+      "PackagePath": "build\\DomKinoServer.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.DomKinoServer.props",
+      "PackagePath": "buildMultiTargeting\\DomKinoServer.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.DomKinoServer.props",
+      "PackagePath": "buildTransitive\\DomKinoServer.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

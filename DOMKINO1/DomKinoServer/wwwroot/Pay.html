@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMKINO - Оплата</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #202123;
+            color: #B0A48C;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        header {
+            background-color: #333;
+            color: #B0A48C;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            width: 100%;
+        }
+        nav a {
+            color: #B0A48C;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .payment-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        .payment-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .payment-buttons button.cancel {
+            background-color: #dc3545;
+        }
+        .payment-buttons button.pay {
+            background-color: #28a745;
+        }
+        footer {
+            background-color: #333;
+            color: #B0A48C;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DOMKINO</h1>
+        <p>Ваш кинотеатр для лучших впечатлений</p>
+    </header>
+
+    <nav>
+        <a href="Catalog.html">Каталог</a>
+        <a href="Booking.html">Зал</a>
+        <a href="Bonus.html">Бонусная программа</a>
+        <a id="authLink" href="Auth.html">Авторизация</a>
+        <a href="Info.html">Контактная информация</a>
+    </nav>
+
+    <div class="container">
+        <h2>Оплата брони</h2>
+        <div class="payment-buttons">
+            <button class="cancel" onclick="cancelBooking()">Отменить бронь</button>
+            <button class="pay" onclick="payBooking()">Оплачу наличными</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 DOMKINO. Все права защищены.</p>
+    </footer>
+
+    <script>
+        async function cancelBooking() {
+            const bookingId = localStorage.getItem('bookingId');
+            if (!bookingId) {
+                alert('Бронь не найдена');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5001/api/booking/cancel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        bookingId: bookingId
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Бронь отменена');
+                    window.location.href = 'Catalog.html';
+                } else {
+                    alert('Ошибка при отмене брони');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Ошибка при отмене брони');
+            }
+        }
+
+        async function payBooking() {
+            const bookingId = localStorage.getItem('bookingId');
+            if (!bookingId) {
+                alert('Бронь не найдена');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5001/api/booking/pay', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        bookingId: bookingId
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Бронь оплачена');
+                    window.location.href = 'Catalog.html';
+                } else {
+                    alert('Ошибка при оплате брони');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Ошибка при оплате брони');
+            }
+        }
+    </script>
+</body>
+</html>

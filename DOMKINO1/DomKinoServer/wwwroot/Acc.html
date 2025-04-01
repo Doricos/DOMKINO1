@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMKINO - Аккаунт</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #202123;
+            color: #B0A48C;
+        }
+        header {
+            background-color: #333;
+            color: #B0A48C;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+        }
+        nav a {
+            color: #B0A48C;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin-top: 50px;
+        }
+        .user-info {
+            width: 30%;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .user-info h2 {
+            margin-bottom: 20px;
+        }
+        .user-info p {
+            margin: 10px 0;
+        }
+        .user-info button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .user-info button:hover {
+            background-color: #0056b3;
+        }
+        .bookings {
+            width: 65%;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .bookings h2 {
+            margin-bottom: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: #B0A48C;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        #adminRightsButton {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DOMKINO</h1>
+        <p>Ваш кинотеатр для лучших впечатлений</p>
+    </header>
+
+    <nav>
+        <a href="Catalog.html">Каталог</a>
+        <a href="Booking.html">Зал</a>
+        <a href="Bonus.html">Бонусная программа</a>
+        <a id="authLink" href="Auth.html">Авторизация</a>
+        <a href="Info.html">Контактная информация</a>
+    </nav>
+
+    <div class="container">
+        <div class="user-info">
+            <h2>Ваш аккаунт</h2>
+            <p><strong>Имя:</strong> <span id="firstName"></span></p>
+            <p><strong>Фамилия:</strong> <span id="lastName"></span></p>
+            <p><strong>Номер телефона:</strong> <span id="phone"></span></p>
+            <button onclick="resetPassword()">Сбросить пароль</button>
+            <button onclick="logout()">Выход из аккаунта</button>
+            <button id="adminRightsButton" style="display: none;" onclick="window.location.href='Admin.html'">Админ панель</button>
+        </div>
+
+        <div class="bookings">
+            <h2>Ваши бронирования</h2>
+            <p>Здесь будет таблица с бронированиями.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 DOMKINO. Все права защищены.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                window.location.href = 'Main.html';
+                return;
+            }
+
+            // Загрузка данных пользователя
+            document.getElementById('firstName').textContent = localStorage.getItem('firstName');
+            document.getElementById('lastName').textContent = localStorage.getItem('lastName');
+            document.getElementById('phone').textContent = localStorage.getItem('phone');
+
+            // Проверка прав администратора
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            if (isAdmin) {
+                document.getElementById('adminRightsButton').style.display = 'block';
+            }
+
+            // Обновление ссылки "Авторизация" на "Аккаунт"
+            const authLink = document.getElementById('authLink');
+            if (authLink) {
+                authLink.textContent = 'Аккаунт';
+                authLink.href = 'Acc.html';
+            }
+        });
+
+        function resetPassword() {
+            const newPassword = prompt('Введите новый пароль:');
+            if (newPassword) {
+                fetch('http://localhost:5001/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phone: localStorage.getItem('phone'), newPassword })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Пароль успешно изменен!');
+                    } else {
+                        alert('Ошибка при изменении пароля.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Ошибка при изменении пароля.');
+                });
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('phone');
+            localStorage.removeItem('firstName');
+            localStorage.removeItem('lastName');
+            localStorage.removeItem('isAdmin');
+            window.location.href = 'Main.html';
+        }
+    </script>
+</body>
+</html>

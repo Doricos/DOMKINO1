@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMKINO - Админ панель</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #202123;
+            color: #B0A48C;
+        }
+        header {
+            background-color: #333;
+            color: #B0A48C;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+        }
+        nav a {
+            color: #B0A48C;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+        .admin-panel {
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .admin-panel h2 {
+            margin-bottom: 20px;
+        }
+        .admin-panel button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .admin-panel button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #333;
+            color: #B0A48C;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DOMKINO</h1>
+        <p>Ваш кинотеатр для лучших впечатлений</p>
+    </header>
+
+    <nav>
+        <a href="Catalog.html">Каталог</a>
+        <a href="Booking.html">Зал</a>
+        <a href="Bonus.html">Бонусная программа</a>
+        <a id="authLink" href="Acc.html">Аккаунт</a>
+        <a href="Info.html">Контактная информация</a>
+    </nav>
+
+    <div class="container">
+        <div class="admin-panel">
+            <h2>Админ панель</h2>
+            <button onclick="manageMovies()">Управление фильмами</button>
+            <button onclick="manageSessions()">Управление сеансами</button>
+            <button onclick="manageAccounts()">Управление аккаунтами</button>
+            <button onclick="manageBookings()">Управление бронированием</button>
+            <button onclick="grantAdmin()">Выдать админа</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 DOMKINO. Все права защищены.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                window.location.href = 'Main.html';
+                return;
+            }
+
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            if (!isAdmin) {
+                alert('У вас нет прав доступа к админ панели.');
+                window.location.href = 'Main.html';
+            }
+
+            // Обновление ссылки "Авторизация" на "Аккаунт"
+            const authLink = document.getElementById('authLink');
+            if (authLink) {
+                authLink.textContent = 'Аккаунт';
+                authLink.href = 'Acc.html';
+            }
+        });
+
+        function manageMovies() {
+            alert('Управление фильмами');
+            // Добавьте функционал здесь
+        }
+
+        function manageSessions() {
+            alert('Управление сеансами');
+            // Добавьте функционал здесь
+        }
+
+        function manageAccounts() {
+            alert('Управление аккаунтами');
+            // Добавьте функционал здесь
+        }
+
+        function manageBookings() {
+            alert('Управление бронированием');
+            // Добавьте функционал здесь
+        }
+
+        function grantAdmin() {
+            alert('Выдать админа');
+            // Добавьте функционал здесь
+        }
+    </script>
+</body>
+</html>

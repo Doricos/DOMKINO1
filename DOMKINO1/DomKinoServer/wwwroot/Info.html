@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMKINO - Контактная информация</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #202123;
+            color: #B0A48C;
+        }
+        header {
+            background-color: #333;
+            color: #B0A48C;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+        }
+        nav a {
+            color: #B0A48C;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        footer {
+            background-color: #333;
+            color: #B0A48C;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Стили для контактной информации */
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            filter: invert(70%);
+        }
+
+        .map-container {
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            background: #444;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .social-link img {
+            width: 40px;
+            transition: transform 0.3s;
+        }
+
+        .social-link:hover img {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .contact-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DOMKINO</h1>
+        <p>Ваш кинотеатр для лучших впечатлений</p>
+    </header>
+
+    <nav>
+        <a href="Catalog.html">Каталог</a>
+        <a href="Hall.html">Зал</a>
+        <a href="Bonus.html">Бонусная программа</a>
+        <a id="authLink" href="Auth.html">Авторизация</a>
+        <a href="Info.html">Контактная информация</a>
+    </nav>
+
+    <div class="container">
+        <div class="contact-container">
+            <h2>Свяжитесь с нами</h2>
+            
+            <div class="contact-section">
+                <div>
+                    <div class="contact-item">
+                        <img src="icons/location.png" alt="Адрес" class="contact-icon">
+                        <div>
+                            <h3>Адрес</h3>
+                            <p>г. Москва, ул. Кинотеатральная, 15<br>ТРЦ «КиноПлаза», 4 этаж</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <img src="icons/phone.png" alt="Телефон" class="contact-icon">
+                        <div>
+                            <h3>Телефон</h3>
+                            <p><a href="tel:+74951234567" style="color: #B0A48C;">+7 (495) 123-45-67</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="contact-item">
+                        <img src="icons/email.png" alt="Email" class="contact-icon">
+                        <div>
+                            <h3>Email</h3>
+                            <p><a href="mailto:info@domkino.ru" style="color: #B0A48C;">info@domkino.ru</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <img src="icons/clock.png" alt="Часы работы" class="contact-icon">
+                        <div>
+                            <h3>Часы работы</h3>
+                            <p>Ежедневно: 10:00 - 02:00<br>Касса: 10:00 - 01:30</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <iframe 
+                    src="https://yandex.ru/map-widget/v1/?um=constructor%3A1a285d4b3d7b7d1d8e3e9e7b4e5f4c3a&amp;source=constructor" 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0"
+                    style="border:0;"
+                    allowfullscreen="">
+                </iframe>
+            </div>
+
+            <div class="social-links">
+                <a href="https://vk.com/domkino" class="social-link" target="_blank">
+                    <img src="icons/vk.png" alt="ВКонтакте">
+                </a>
+                <a href="https://t.me/domkino" class="social-link" target="_blank">
+                    <img src="icons/telegram.png" alt="Telegram">
+                </a>
+                <a href="https://www.youtube.com/domkino" class="social-link" target="_blank">
+                    <img src="icons/youtube.png" alt="YouTube">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 DOMKINO. Все права защищены.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) return;
+
+            const authLink = document.getElementById('authLink');
+            if (authLink) {
+                authLink.textContent = 'Аккаунт';
+                authLink.href = 'Acc.html';
+            }
+        });
+    </script>
+</body>
+</html>

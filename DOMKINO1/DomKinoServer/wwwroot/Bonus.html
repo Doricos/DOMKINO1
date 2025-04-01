@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMKINO - Бонусная программа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #202123;
+            color: #B0A48C;
+        }
+        header {
+            background-color: #333;
+            color: #B0A48C;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+        }
+        nav a {
+            color: #B0A48C;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        footer {
+            background-color: #333;
+            color: #B0A48C;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Стили для бонусной программы */
+        .bonus-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-card {
+            background: #444;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: #202123;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: #4CAF50;
+            width: 65%;
+            transition: width 0.3s;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .benefit-card {
+            background: #444;
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .bonus-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 15px;
+            filter: invert(70%);
+        }
+
+        .points-display {
+            font-size: 2.5em;
+            color: #4CAF50;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DOMKINO</h1>
+        <p>Ваш кинотеатр для лучших впечатлений</p>
+    </header>
+
+    <nav>
+        <a href="Catalog.html">Каталог</a>
+        <a href="Hall.html">Зал</a>
+        <a href="Bonus.html">Бонусная программа</a>
+        <a id="authLink" href="Auth.html">Авторизация</a>
+        <a href="Info.html">Контактная информация</a>
+    </nav>
+
+    <div class="container">
+        <div class="bonus-container">
+            <h2>Ваша бонусная программа</h2>
+            
+            <div class="status-card">
+                <img src="icons/medal.png" alt="Уровень" class="bonus-icon">
+                <h3>Текущий статус: <span style="color: #4CAF50;">Золотой</span></h3>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <p>До следующего уровня осталось: 350 баллов</p>
+            </div>
+
+            <div class="points-display">
+                <img src="icons/coin.png" alt="Баллы" class="bonus-icon">
+                <div>12 450 баллов</div>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <img src="icons/ticket.png" alt="Билеты" class="bonus-icon">
+                    <h3>Бесплатные билеты</h3>
+                    <p>Каждые 5000 баллов = 1 бесплатный билет</p>
+                </div>
+
+                <div class="benefit-card">
+                    <img src="icons/popcorn.png" alt="Закуски" class="bonus-icon">
+                    <h3>Скидки на закуски</h3>
+                    <p>Постоянная скидка 15% в баре</p>
+                </div>
+
+                <div class="benefit-card">
+                    <img src="icons/vip.png" alt="VIP" class="bonus-icon">
+                    <h3>VIP-зал</h3>
+                    <p>Доступ к премиум-залам</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3>Как зарабатывать баллы?</h3>
+                <ul style="text-align: left; list-style: none; padding: 0;">
+                    <li style="margin: 10px 0;">🎥 50 баллов за каждый купленный билет</li>
+                    <li style="margin: 10px 0;">🍿 10 баллов за каждые 100 рублей в баре</li>
+                    <li style="margin: 10px 0;">📱 200 баллов за приглашение друга</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 DOMKINO. Все права защищены.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const authLink = document.getElementById('authLink');
+
+            if (isLoggedIn) {
+                if (authLink) {
+                    authLink.textContent = 'Аккаунт';
+                    authLink.href = 'Acc.html';
+                }
+            } else {
+                const container = document.querySelector('.container');
+                container.innerHTML = `
+                    <div class="bonus-container" style="text-align: center;">
+                        <h2>Для участия в программе</h2>
+                        <p>Авторизуйтесь в системе</p>
+                        <a href="Auth.html" style="
+                            display: inline-block;
+                            padding: 10px 30px;
+                            background: #4CAF50;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                        ">Войти</a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
